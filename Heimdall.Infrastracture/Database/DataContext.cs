@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Heimdall.Domain.GlucoseRecordDomain;
 using Heimdall.Domain.UsersDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +16,10 @@ namespace Heimdall.Infrastracture.Database
     {
         public DataContext() { }
         public DataContext(DbContextOptions<DataContext> options): base(options) {}
-
         public DbSet<User> Users { get; set; }
+        public DbSet<Exception> Exceptions { get; set; }
+        public DbSet<GlucoseRecord> GlucoseRecords { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +36,7 @@ namespace Heimdall.Infrastracture.Database
         {
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Exception>().ToTable("Exceptional");
+            modelBuilder.Entity<GlucoseRecord>().ToTable("GlucoseRecords");
         }
     }
 }

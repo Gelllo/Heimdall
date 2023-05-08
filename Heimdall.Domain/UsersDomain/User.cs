@@ -14,8 +14,14 @@ namespace Heimdall.Domain.UsersDomain
         [Key]
         public int Id { get; set; }
 
-        [Column("Username",TypeName = "nvarchar(200)"), Required]
-        public string Username { get; set; }
+        [Column("UserID",TypeName = "nvarchar(200)"), Required]
+        public string UserID { get; set; }
+
+        [Column("LastName", TypeName = "nvarchar(200)"), Required]
+        public string LastName { get; set; }
+
+        [Column("FirstName", TypeName = "nvarchar(200)"), Required]
+        public string FirstName { get; set; }
 
         [Column("Email", TypeName = "nvarchar(200)"), Required]
         public string Email { get; set; }

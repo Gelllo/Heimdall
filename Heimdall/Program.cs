@@ -15,6 +15,7 @@ using Serilog.Sinks.MSSqlServer;
 using ILogger = Serilog.ILogger;
 using System.Collections.ObjectModel;
 using System.Data;
+using Heimdall.Infrastracture.Database.Dispatchers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,8 +68,10 @@ builder.Services.AddDbContext<DataContext>(x =>
 builder.Services.AddFastEndpoints();
 builder.Services.AddSwaggerDoc();
 
-builder.Services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
-builder.Services.AddSingleton<IQueryDispatcher, QueryDispatcher>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
+builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+
 
 builder.Services.Scan(selector =>
 {
@@ -78,7 +81,7 @@ builder.Services.Scan(selector =>
             filter.AssignableTo(typeof(IQueryHandler<,>));
         })
         .AsImplementedInterfaces()
-        .WithSingletonLifetime();
+        .WithScopedLifetime();
 });
 
 
@@ -90,7 +93,7 @@ builder.Services.Scan(selector =>
             filter.AssignableTo(typeof(Heimdall.Application.ICommandHandler<,>));
         })
         .AsImplementedInterfaces()
-        .WithSingletonLifetime();
+        .WithScopedLifetime();
 });
 
 var app = builder.Build();
