@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Heimdall.Application;
 
-namespace Heimdall.Infrastracture.Database
+namespace Heimdall.Infrastracture.Database.Dispatchers
 {
     public class QueryDispatcher : IQueryDispatcher
     {

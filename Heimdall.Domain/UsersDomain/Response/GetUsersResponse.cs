@@ -4,6 +4,6 @@ namespace Heimdall.Domain.UsersDomain.Response
 {
     public record GetUsersResponse
     {
-        public List<User>? UsersList { get; set; }
+        public IEnumerable<User>? UsersList { get; set; }
     }
 }
