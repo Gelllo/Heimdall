@@ -24,7 +24,7 @@ builder.Configuration.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
 
 Serilog.Debugging.SelfLog.Enable(msg=> Console.WriteLine(msg));
 
-var sinkOpts = new MSSqlServerSinkOptions { TableName = "Exceptional", SchemaName = "dbo", AutoCreateSqlTable = false };
+var sinkOpts = new MSSqlServerSinkOptions { TableName = "Exceptions", SchemaName = "dbo", AutoCreateSqlTable = true };
 
 var columnOptions = new ColumnOptions
 {
