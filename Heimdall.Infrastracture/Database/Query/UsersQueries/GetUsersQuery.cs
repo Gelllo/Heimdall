@@ -3,27 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Heimdall.Application;
 using Heimdall.Application.Repository;
-using Heimdall.Domain.UsersDomain;
-using Heimdall.Domain.UsersDomain.Request;
-using Heimdall.Domain.UsersDomain.Response;
+using Heimdall.Application.Requests.Users;
+using Heimdall.Application.Responses.Users;
+
 
 namespace Heimdall.Infrastracture.Database.Query.UsersHandlers
 {
-    public class GetUsersHandler : IQueryHandler<GetUsersRequest, GetUsersResponse>
+    public class GetUsersQuery : IQueryHandler<GetUsersRequest, GetUsersResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetUsersHandler(IUnitOfWork unitOfWork)
+        public GetUsersQuery(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this._unitOfWork = unitOfWork;
+            this._mapper = mapper;
         }
 
         public async Task<GetUsersResponse> Handle(GetUsersRequest query, CancellationToken cancellation)
         {
-            var users = new GetUsersResponse() { UsersList = await _unitOfWork.UserRepository.GetUsersAsync()};
-            return users;
+            return _mapper.Map<GetUsersResponse>(await _unitOfWork.UserRepository.GetUsersAsync());
         }
     }
 }

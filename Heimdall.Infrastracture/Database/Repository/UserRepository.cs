@@ -26,25 +26,30 @@ namespace Heimdall.Infrastracture.Database.Repository
             return await GetAllAsync();
         }
 
-        public User GetUserByID(int userId)
+        public async Task<User> GetUserByID(int userId)
         {
-            return _dbContext.Users.Find(userId);
+            return await _dbContext.Users.FindAsync(userId);
         }
 
-        public void InsertUser(User user)
+        public async Task<int> InsertUser(User user)
         {
-            _dbContext.Users.Add(user);
+            await _dbContext.Users.AddAsync(user);
+            Save();
+            return user.Id;
         }
 
         public void DeleteUser(int userID)
         {
             User user = _dbContext.Users.Find(userID);
             _dbContext.Users.Remove(user);
+            Save();
         }
 
-        public void UpdateUser(User user)
+        public async Task<User> UpdateUserAsync(User user)
         {
             _dbContext.Entry(user).State = EntityState.Modified;
+            Save();
+            return user;
         }
 
         public void Save()

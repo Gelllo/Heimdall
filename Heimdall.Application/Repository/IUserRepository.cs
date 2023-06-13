@@ -12,10 +12,10 @@ namespace Heimdall.Application.Repository
         IEnumerable<User> GetUsers();
 
         Task<IEnumerable<User>> GetUsersAsync();
-        User GetUserByID(int studentId);
-        void InsertUser(User student);
+        Task<User> GetUserByID(int studentId);
+        Task<int> InsertUser(User student);
         void DeleteUser(int studentID);
-        void UpdateUser(User student);
+        Task<User> UpdateUserAsync(User student);
         void Save();
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Heimdall.Domain.UsersDomain;
 
 namespace Heimdall.Domain.GlucoseRecordDomain
 {
@@ -22,5 +23,10 @@ namespace Heimdall.Domain.GlucoseRecordDomain
 
         [Column("Color", TypeName = "nvarchar(200)"), Required]
         public string Color { get; set; }
+
+        [Column("UserId", TypeName = "nvarchar(200)"), Required]
+        public string UserId { get; set; }
+
+        public User User { get; set; } = null;
     }
 }

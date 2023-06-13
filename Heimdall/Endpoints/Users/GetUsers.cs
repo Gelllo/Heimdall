@@ -1,22 +1,21 @@
 ﻿using FastEndpoints;
 using Heimdall.Application;
-using Heimdall.Domain.UsersDomain.Request;
-using Heimdall.Domain.UsersDomain.Response;
-using Microsoft.AspNetCore.Mvc;
+using Heimdall.Application.Requests.Users;
+using Heimdall.Application.Responses.Users;
 using ILogger = Serilog.ILogger;
 
-namespace Heimdall.Endpoints
+namespace Heimdall.Web.Endpoints.Users
 {
 
-    public class GetUsers: Endpoint<GetUsersRequest, GetUsersResponse>
+    public class GetUsers : Endpoint<GetUsersRequest, GetUsersResponse>
     {
-        private IQueryDispatcher _dispatcher;
+        private readonly IQueryDispatcher _dispatcher;
         private ILogger _logger;
 
         public GetUsers(IQueryDispatcher dispatcher, ILogger logger)
         {
-            this._dispatcher = dispatcher;
-            this._logger = logger;
+            _dispatcher = dispatcher;
+            _logger = logger;
         }
         public override void Configure()
         {
@@ -25,8 +24,7 @@ namespace Heimdall.Endpoints
         }
 
         public override async Task HandleAsync(GetUsersRequest r, CancellationToken c)
-        {
-            _logger.Error(new Exception("Random"),"Random");
+        { 
             await SendAsync(await _dispatcher.Dispatch<GetUsersRequest, GetUsersResponse>(r, c));
         }
     }

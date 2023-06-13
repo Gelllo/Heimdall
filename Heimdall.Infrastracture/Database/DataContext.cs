@@ -8,7 +8,6 @@ using Heimdall.Domain.UsersDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
-using Exception = Heimdall.Domain.ExceptionsDomain.Exception;
 
 namespace Heimdall.Infrastracture.Database
 {
@@ -17,7 +16,6 @@ namespace Heimdall.Infrastracture.Database
         public DataContext() { }
         public DataContext(DbContextOptions<DataContext> options): base(options) {}
         public DbSet<User> Users { get; set; }
-        public DbSet<Exception> Exceptions { get; set; }
         public DbSet<GlucoseRecord> GlucoseRecords { get; set; }
 
 
@@ -35,8 +33,15 @@ namespace Heimdall.Infrastracture.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<Exception>().ToTable("Exceptional");
-            modelBuilder.Entity<GlucoseRecord>().ToTable("GlucoseRecords");
+            modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<User>().HasAlternateKey(u => u.UserID);
+
+            modelBuilder.Entity<GlucoseRecord>().ToTable("GlucoseRecords")
+                .HasOne(gr=> gr.User)
+                .WithMany(u => u.GlucoseRecords)
+                .HasForeignKey(gr => gr.UserId)
+                .HasPrincipalKey(u=>u.UserID)
+                .IsRequired();
         }
     }
 }

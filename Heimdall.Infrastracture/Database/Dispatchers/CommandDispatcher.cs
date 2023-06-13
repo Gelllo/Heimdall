@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Heimdall.Infrastracture.Database
+namespace Heimdall.Infrastracture.Database.Dispatchers
 {
     public class CommandDispatcher : ICommandDispatcher
     {

@@ -1,6 +1,6 @@
 ﻿using Heimdall.Domain.UsersDomain;
 
-namespace Heimdall.Domain.UsersDomain.Response
+namespace Heimdall.Application.Responses.Users
 {
     public record GetUsersResponse
     {

@@ -3,8 +3,6 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Heimdall;
-using Heimdall.Endpoints;
 using Heimdall.Infrastracture.Database;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Entity.Infrastructure.Interception;
@@ -15,6 +13,7 @@ using Serilog.Sinks.MSSqlServer;
 using ILogger = Serilog.ILogger;
 using System.Collections.ObjectModel;
 using System.Data;
+using Heimdall.Application.Mappings;
 using Heimdall.Infrastracture.Database.Dispatchers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -64,7 +63,7 @@ builder.Host.UseSerilog(Log.Logger);
 // Add services to the container.
 
 builder.Services.AddDbContext<DataContext>(x =>
-    x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    x.UseSqlServer(builder.Configuration.GetConnectionString("HeimdallConnection")));
 builder.Services.AddFastEndpoints();
 builder.Services.AddSwaggerDoc();
 
@@ -72,6 +71,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
 builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();
 
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(UserMappings)));
 
 builder.Services.Scan(selector =>
 {
@@ -87,7 +87,7 @@ builder.Services.Scan(selector =>
 
 builder.Services.Scan(selector =>
 {
-    selector.FromCallingAssembly()
+    selector.FromAssemblyDependencies(Assembly.GetAssembly(typeof(DataContext)))
         .AddClasses(filter =>
         {
             filter.AssignableTo(typeof(Heimdall.Application.ICommandHandler<,>));
@@ -106,14 +106,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerGen();
     app.UseSwaggerUi3();
 }
-
-//app.UseSerilogRequestLogging(options =>
-//{
-//    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
-//    {
-//        diagnosticContext.Set();
-//    }
-//})
 
 app.UseHttpsRedirection();
 

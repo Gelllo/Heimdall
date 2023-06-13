@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Heimdall.Domain.GlucoseRecordDomain;
 
 namespace Heimdall.Domain.UsersDomain
 {
@@ -28,6 +29,8 @@ namespace Heimdall.Domain.UsersDomain
 
         [Column("Password", TypeName = "nvarchar(200)"), Required]
         public string Password { get; set; }
+
+        public ICollection<GlucoseRecord> GlucoseRecords { get; set;} = new List<GlucoseRecord>();
 
     }
 }
