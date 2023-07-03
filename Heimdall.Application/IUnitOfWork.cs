@@ -9,9 +9,7 @@ namespace Heimdall.Application
 {
     public interface IUnitOfWork
     {
-        IUserRepository UserRepository { get; }
         IGlucoseRecordRepository GlucoseRecordRepository { get; }
-
         void Commit();
         void Rollback();
         Task CommitAsync();

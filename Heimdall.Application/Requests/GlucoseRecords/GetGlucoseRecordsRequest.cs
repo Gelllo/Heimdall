@@ -8,5 +8,8 @@ namespace Heimdall.Application.Requests.GlucoseRecords
 {
     public record GetGlucoseRecordsRequest
     {
+        public string? UserID { get; set; }
+
+        public string? Date { get; set; }
     }
 }

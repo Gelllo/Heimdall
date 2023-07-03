@@ -1,8 +1,8 @@
 ﻿using FastEndpoints;
 using Heimdall.Application;
 using Heimdall.Application.Requests.GlucoseRecords;
+using Heimdall.Application.Requests.GlucoseRecords.Validation;
 using Heimdall.Application.Responses.GlucoseRecords;
-using ILogger = Serilog.ILogger;
 
 namespace Heimdall.Web.Endpoints.GlucoseRecords
 {
@@ -19,14 +19,23 @@ namespace Heimdall.Web.Endpoints.GlucoseRecords
 
         public override void Configure()
         {
-            Put("/glucoserecords/");
-            AllowAnonymous();
+            Put("/glucoserecords/{RecordID}");
+            Validator<UpdateGlucoseRecordRequestValidation>();
+            Roles("USER");
         }
 
         public override async Task HandleAsync(UpdateGlucoseRecordRequest req, CancellationToken ct)
         {
-            await SendAsync(
-                await _dispatcher.Dispatch<UpdateGlucoseRecordRequest, UpdateGlucoseRecordResponse>(req, ct));
+            try
+            {
+                req.Id = Route<int>("RecordID");
+                await SendAsync(
+                    await _dispatcher.Dispatch<UpdateGlucoseRecordRequest, UpdateGlucoseRecordResponse>(req, ct));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
         }
     }
 }

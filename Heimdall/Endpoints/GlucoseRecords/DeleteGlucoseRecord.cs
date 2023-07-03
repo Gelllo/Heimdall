@@ -2,11 +2,10 @@
 using Heimdall.Application;
 using Heimdall.Application.Requests.GlucoseRecords;
 using Heimdall.Application.Responses.GlucoseRecords;
-using ILogger = Serilog.ILogger;
 
 namespace Heimdall.Web.Endpoints.GlucoseRecords
 {
-    public class DeleteGlucoseRecord : Endpoint<DeleteGlucoseRecordRequest, DeleteGlucoseRecordResponse>
+    public class DeleteGlucoseRecord : EndpointWithoutRequest
     {
         private ICommandDispatcher _dispatcher;
         private ILogger _logger;
@@ -19,13 +18,22 @@ namespace Heimdall.Web.Endpoints.GlucoseRecords
 
         public override void Configure()
         {
-            Delete("/glucoserecords/");
-            AllowAnonymous();
+            Delete("/glucoserecords/{RecordID}");
+            Roles("USER");
         }
 
-        public override async Task HandleAsync(DeleteGlucoseRecordRequest req, CancellationToken ct)
+        public override async Task HandleAsync(CancellationToken ct)
         {
-            await SendAsync(await _dispatcher.Dispatch<DeleteGlucoseRecordRequest, DeleteGlucoseRecordResponse>(req, ct));
+            try
+            {
+                var req = new DeleteGlucoseRecordRequest() { Id = Route<int>("RecordID") };
+                await SendAsync(await _dispatcher.Dispatch<DeleteGlucoseRecordRequest, DeleteGlucoseRecordResponse>(req, ct), StatusCodes.Status204NoContent);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
+            
         }
     }
 }
