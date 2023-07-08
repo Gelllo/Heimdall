@@ -24,7 +24,7 @@ namespace Heimdall.Infrastracture.Database.Query.GlucoseRecordsQueries
         public async Task<GetGlucoseRegisteredDaysResponse> Handle(GetGlucoseRegisteredDaysRequest query, CancellationToken cancellation)
         {
 
-            return new GetGlucoseRegisteredDaysResponse(){RegisteredDays = await _unitOfWork.GlucoseRecordRepository.GetRegisteredDaysAsync()};
+            return new GetGlucoseRegisteredDaysResponse(){RegisteredDays = await _unitOfWork.GlucoseRecordRepository.GetRegisteredDaysAsync(query.UserID)};
         }
     }
 }

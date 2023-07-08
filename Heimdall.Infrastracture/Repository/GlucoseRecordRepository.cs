@@ -55,9 +55,9 @@ namespace Heimdall.Infrastracture.Database.Repository
             return rand;
         }
 
-        public async Task<IEnumerable<RegisteredDaysDto>> GetRegisteredDaysAsync()
+        public async Task<IEnumerable<RegisteredDaysDto>> GetRegisteredDaysAsync(string userID)
         {
-            var groupedDates = await _dbContext.GlucoseRecords.GroupBy(x => x.DateRegistered).OrderByDescending(x=>x.Key).Select(g =>
+            var groupedDates = await _dbContext.GlucoseRecords.AsQueryable().Where(x=>x.UserId==userID).GroupBy(x => x.DateRegistered).OrderByDescending(x=>x.Key).Select(g =>
                     new RegisteredDaysDto() { Date = g.Key.ToShortDateString(), RecordsCountPerDay = g.Count() })
                 .ToListAsync();
 

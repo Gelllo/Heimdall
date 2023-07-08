@@ -16,7 +16,7 @@ namespace Heimdall.Application.Repository
         Task<IEnumerable<GlucoseRecord>> GetGlucoseRecordsAsync(string? userID, string? date);
         Task<IEnumerable<GlucoseRecord>> GetGlucoseRecordsFromSpecifiedDateUntilNow(string? userID, string? date);
         Task<IEnumerable<GlucoseRecordBarChartDTO>> GetGlucoseRecordsForBarChart(string? userID);
-        Task<IEnumerable<RegisteredDaysDto>> GetRegisteredDaysAsync();
+        Task<IEnumerable<RegisteredDaysDto>> GetRegisteredDaysAsync(string userID);
         Task<GlucoseRecord?> GetGlucoseRecordByID(int id);
         Task<int> InsertGlucoseRecord(GlucoseRecord record);
         void DeleteGlucoseRecord(int id);

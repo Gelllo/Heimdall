@@ -9,7 +9,6 @@ using AutoMapper;
 using Heimdall.Application;
 using Heimdall.Application.Requests.GlucoseRecords;
 using Heimdall.Application.Responses.GlucoseRecords;
-using Heimdall.Domain.GlucoseRecordDomain;
 
 namespace Heimdall.Infrastracture.Database.Command.GlucoseRecordsCommands
 {
